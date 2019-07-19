@@ -13,10 +13,10 @@
 
 ### CycleGAN：
 
-​		CycleGAN来自[**vanhuyz**](https://github.com/vanhuyz/CycleGAN-TensorFlow)，主要方向是风格迁移。提供新的网路结构。
+CycleGAN来自[**vanhuyz**](https://github.com/vanhuyz/CycleGAN-TensorFlow)，主要方向是风格迁移。提供新的网路结构。
 
-SRGAN_Wasserstein（WGAN）：
+### SRGAN_Wasserstein（WGAN）：
 
-​		SRGAN_Wasserstein来自**[JustinhoCHN](https://github.com/JustinhoCHN/SRGAN_Wasserstein)**，主要方向是super resolution。引入W距离。
+SRGAN_Wasserstein来自**[JustinhoCHN](https://github.com/JustinhoCHN/SRGAN_Wasserstein)**，主要方向是super resolution。引入W距离。
 
-​       *PS：在此文件夹中，包含原型Resnet50结构，可以直接提取文件进行训练。*
+*PS：在此文件夹中，包含原型Resnet50结构，可以直接提取文件进行训练。*
