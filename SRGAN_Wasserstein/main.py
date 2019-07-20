@@ -1,7 +1,7 @@
 from Add.model import *
 from utils import *
 from config import config
-from resnet50 import Resnet50
+from Add.resnet50 import Resnet50
 
 #优化器
 batch_size   = config.TRAIN.batch_size
