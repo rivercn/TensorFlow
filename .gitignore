@@ -1,0 +1,10 @@
+
+*.jpg
+*.h5
+*.png
+*.pptx
+*.jpeg
+*.data-00000-of-00001
+*.index
+*.meta
+SRGAN_Wasserstein/model_saving/checkpoint

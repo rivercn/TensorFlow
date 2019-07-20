@@ -353,7 +353,7 @@ class hand_classifier(object):
         saver = tf.train.Saver()
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
-            for i in range(1):
+            for i in range(1100):
                 X_mini_batch, Y_mini_batch = mini_batches[np.random.randint(0, len(mini_batches))]
                 train_step.run(feed_dict={features: X_mini_batch, labels: Y_mini_batch, keep_prob: 0.5, train_mode: True})
 
