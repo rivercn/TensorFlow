@@ -1,32 +1,22 @@
-#! /usr/bin/python
-# -*- coding: utf8 -*-
-
-import os, time, pickle, random, time
-from datetime import datetime
-import numpy as np
-from time import localtime, strftime
-import logging, scipy
-
-import tensorflow as tf
-import tensorlayer as tl
-from model import *
+from Add.model import *
 from utils import *
-from config import config, log_config
+from config import config
+from resnet50 import Resnet50
 
-###====================== HYPER-PARAMETERS ===========================###
-## Adam
-batch_size = config.TRAIN.batch_size
-lr_init = config.TRAIN.lr_init
-beta1 = config.TRAIN.beta1
+#优化器
+batch_size   = config.TRAIN.batch_size
+lr_init      = config.TRAIN.lr_init
+beta1        = config.TRAIN.beta1
+
 ## initialize G
 n_epoch_init = config.TRAIN.n_epoch_init
-## adversarial learning (SRGAN)
-n_epoch = config.TRAIN.n_epoch
-lr_decay = config.TRAIN.lr_decay
-decay_every = config.TRAIN.decay_every
-logdir = config.VALID.logdir
 
-ni = int(np.sqrt(batch_size))
+## adversarial learning (SRGAN)
+n_epoch      = config.TRAIN.n_epoch
+lr_decay     = config.TRAIN.lr_decay
+decay_every  = config.TRAIN.decay_every
+logdir       = config.VALID.logdir
+ni           = int(np.sqrt(batch_size))
 
 
 def read_all_imgs(img_list, path='', n_threads=32):
@@ -72,6 +62,8 @@ def train():
     t_image = tf.placeholder('float32', [batch_size, 96, 96, 3], name='t_image_input_to_SRGAN_generator')
     t_target_image = tf.placeholder('float32', [batch_size, 384, 384, 3], name='t_target_image')
 
+    siamese_res = Resnet50()
+    siamese_net = siamese_res.deepnn
     net_g = SRGAN_g(t_image, is_train=True, reuse=False)
     net_d, logits_real ,sigmoid_out_real= SRGAN_d(t_target_image, is_train=True, reuse=False)
     _,     logits_fake ,sigmoid_out_fake= SRGAN_d(net_g.outputs, is_train=True, reuse=True)

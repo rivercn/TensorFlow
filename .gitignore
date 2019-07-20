@@ -8,3 +8,6 @@
 *.index
 *.meta
 SRGAN_Wasserstein/model_saving/checkpoint
+*.ckpt
+*.pbtxt
+*.pb

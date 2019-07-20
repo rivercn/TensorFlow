@@ -1,18 +1,11 @@
 #! /usr/bin/python
 # -*- coding: utf8 -*-
 
-import os, time, pickle, random, time
-from datetime import datetime
-import numpy as np
-from time import localtime, strftime
-import logging, scipy
 import keras.backend as K
 
-import tensorflow as tf
-import tensorlayer as tl
-from model import *
+from Add.model import *
 from utils import *
-from config import config, log_config
+from config import config
 
 ###====================== HYPER-PARAMETERS ===========================###
 ## Adam
