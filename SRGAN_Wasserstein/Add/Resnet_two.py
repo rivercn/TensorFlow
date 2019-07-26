@@ -8,38 +8,15 @@ def Miao_tf(feature):
     :param feature:
     :return:
 
-    tf.Print(feature,[feature])
     P = tf.maximum(feature, 0)
     N = tf.minimum(feature, 0)
-    #P = tf.multiply(P,-1)
-    #P = tf.exp(P)
-    #P = tf.multiply(P,-1)
-    #P = tf.add(P,1)
-    N = tf.subtract( tf.exp(N),1)
-    '''
-    '''
-    tf.Print(feature,[feature])
-    P = tf.maximum(feature, 0)
-    N = tf.minimum(feature, 0)
-    p = tf.reduce_max(feature)
-    n = tf.reduce_min(feature)
-    n = tf.abs(n)
-    '''
-
-    '''
-    P = tf.maximum(feature, 0)
-    #N = tf.minimum(feature, 0)
-    P = tf.subtract(tf.exp(P),1)
-    result = P
-    
-    P = tf.maximum(feature, 0)
-    N = tf.minimum(feature, 0)
-    P = tf.multiply(P,-1)
+    P = tf.multiply(P, -1)
     P = tf.exp(P)
-    P = tf.multiply(P,-1)
-    P = tf.add(P,1)
+    P = tf.multiply(P, -1)
+    P = tf.add(P, 1)
     N = tf.subtract(tf.exp(N), 1)
-    result = tf.add(P,N)
+    result = tf.add(P, N)
+
     '''
     P = tf.maximum(feature, 0)
     N = tf.minimum(feature, 0)
@@ -53,7 +30,7 @@ def Miao_tf(feature):
     return result
 
 
-class hand_classifier(object):
+class resnet_v1_50(object):
 
     def __init__(self, model_save_path='./model_saving/hand_classifier'):
         self.model_save_path = model_save_path
@@ -82,14 +59,14 @@ class hand_classifier(object):
             #first
             W_conv1 = self.weight_variable([1, 1, in_filter, f1])
             X = tf.nn.conv2d(X_input, W_conv1, strides=[1, 1, 1, 1], padding='SAME')
-            X = tf.layers.batch_normalization(X, axis=3, training=training)
+            #X = tf.layers.batch_normalization(X, axis=3, training=training)
             #X = tf.nn.relu(X)
             X = Miao_tf(X)
 
             #second
             W_conv2 = self.weight_variable([kernel_size, kernel_size, f1, f2])
             X = tf.nn.conv2d(X, W_conv2, strides=[1, 1, 1, 1], padding='SAME')
-            X = tf.layers.batch_normalization(X, axis=3, training=training)
+            #X = tf.layers.batch_normalization(X, axis=3, training=training)
             # X = tf.nn.relu(X)
             X = Miao_tf(X)
 
@@ -97,7 +74,7 @@ class hand_classifier(object):
 
             W_conv3 = self.weight_variable([1, 1, f2, f3])
             X = tf.nn.conv2d(X, W_conv3, strides=[1, 1, 1, 1], padding='VALID')
-            X = tf.layers.batch_normalization(X, axis=3, training=training)
+            #X = tf.layers.batch_normalization(X, axis=3, training=training)
 
             #final step
             add = tf.add(X, X_shortcut)
@@ -132,21 +109,21 @@ class hand_classifier(object):
             #first
             W_conv1 = self.weight_variable([1, 1, in_filter, f1])
             X = tf.nn.conv2d(X_input, W_conv1,strides=[1, stride, stride, 1],padding='VALID')
-            X = tf.layers.batch_normalization(X, axis=3, training=training)
+            #X = tf.layers.batch_normalization(X, axis=3, training=training)
             # X = tf.nn.relu(X)
             X = Miao_tf(X)
 
             #second
             W_conv2 = self.weight_variable([kernel_size, kernel_size, f1, f2])
             X = tf.nn.conv2d(X, W_conv2, strides=[1,1,1,1], padding='SAME')
-            X = tf.layers.batch_normalization(X, axis=3, training=training)
+            #X = tf.layers.batch_normalization(X, axis=3, training=training)
             # X = tf.nn.relu(X)
             X = Miao_tf(X)
 
             #third
             W_conv3 = self.weight_variable([1,1, f2,f3])
             X = tf.nn.conv2d(X, W_conv3, strides=[1, 1, 1,1], padding='VALID')
-            X = tf.layers.batch_normalization(X, axis=3, training=training)
+            #X = tf.layers.batch_normalization(X, axis=3, training=training)
 
             #shortcut path
             W_shortcut = self.weight_variable([1, 1, in_filter, f3])
@@ -175,7 +152,7 @@ class hand_classifier(object):
             #stage 1
             w_conv1 = self.weight_variable([7, 7, 3, 64])
             x = tf.nn.conv2d(x, w_conv1, strides=[1, 2, 2, 1], padding='VALID')
-            x = tf.layers.batch_normalization(x, axis=3, training=training)
+            #x = tf.layers.batch_normalization(x, axis=3, training=training)
             #x = tf.nn.relu(x)
             x = Miao_tf(x)
             x = tf.nn.max_pool(x, ksize=[1, 3, 3, 1],
@@ -353,7 +330,7 @@ class hand_classifier(object):
         saver = tf.train.Saver()
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
-            for i in range(1100):
+            for i in range(3000):
                 X_mini_batch, Y_mini_batch = mini_batches[np.random.randint(0, len(mini_batches))]
                 train_step.run(feed_dict={features: X_mini_batch, labels: Y_mini_batch, keep_prob: 0.5, train_mode: True})
 
@@ -382,13 +359,13 @@ class hand_classifier(object):
 
 
 def main(_):
-    data_dir = '.\\h5'
+    data_dir = 'D:\\github\\Test\\TensorFlow\\SRGAN_Wasserstein\\h5'
 
     orig_data = load_dataset(data_dir)
     X_train, Y_train, X_test, Y_test = process_orig_datasets(orig_data)
 
 
-    model = hand_classifier()
+    model = resnet_v1_50()
     model.train(X_train, Y_train)
     model.evaluate(X_test, Y_test)
     model.evaluate(X_train, Y_train, 'training data')

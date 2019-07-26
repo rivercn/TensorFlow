@@ -6,6 +6,9 @@
       <sourceFolder url="file://$MODULE_DIR$/slim/nets" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/slim" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/pretrain" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/h5" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/old_model" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="GPU" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
